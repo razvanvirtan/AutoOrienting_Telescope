@@ -68,7 +68,9 @@ void loop() {
   /* callibrate gyro sensor */
   Wire.begin();
   byte status = mpu.begin(1, 0);
-  while (status != 0) { status = mpu.begin(1, 0); }
+  while (status != 0) { 
+    status = mpu.begin(1, 0);
+  }
   Serial.println(F("Calculating offsets, do not move MPU6050"));
   delay(1000);
   mpu.calcOffsets();
@@ -224,8 +226,9 @@ float julian() { //For more info see 'Practical Astronomy With Your Calculator'.
   int b = 2 - a + floor (a / 4);
   long c = (365.25 * (double) year);
   float d = floor (30.6001 * ((double) month + 1));
-  float jd = b + c + d + (double)thisday + 1720994.5;
-  return jd; //'jd' being the Julian Date.
+  float julian_date = b + c + d + (double)thisday + 1720994.5;
+
+  return julian_date; //'jd' being the Julian Date.
 }
 
 /* translate UTC to GST */
@@ -250,25 +253,20 @@ float gsttolst() {
   double diff = abs(longitude);
   diff = (diff / 15);
   double lst;
-  if ((longitude * -1) > 0)
-  {
+  if ((longitude * -1) > 0) {
     gstresult = gstresult - diff;
-  }
-  else
-  {
+  } else {
     gstresult = gstresult + diff;
   }
-  if (gstresult > 24)
-  {
+  if (gstresult > 24) {
     lst = gstresult - 24;
-  }
-  else if ((gstresult * -1) > 0) {
+  } else if ((gstresult * -1) > 0) {
     lst = gstresult + 24;
-  }
-  else
+  } else
   {
     lst = gstresult;
   }
+
   return lst;
 }
 
